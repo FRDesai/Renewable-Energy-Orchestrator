@@ -13,6 +13,12 @@ every milestone's measured results — including the targets this build misses �
 
 ---
 
+**Claimed position: F3 × D2.** All three feature levels; structured plus text input; reliability measured by 13 invariants over 960 decisions. Multimodal inputs (D3) are designed, not built.
+
+**Demo video (4 min):** https://drive.google.com/file/d/1kFOCxmX3oUtNgblxy9qa-5vHmEsh0rim/view
+
+![Live operations](docs/live-operations.png)
+
 ## The idea in one screen
 
 Three layers, each doing only what it is good at:
