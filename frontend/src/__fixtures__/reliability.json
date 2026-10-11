@@ -1,0 +1,570 @@
+{
+ "episodes": 30,
+ "intervals_each": 32,
+ "decisions": 960,
+ "elapsed_s": 82.8,
+ "invariants": [
+  {
+   "key": "energy_balance",
+   "label": "Energy balance",
+   "pass_condition": "Generation - curtailment + imports + discharge = load + charge + exports (+ unserved)",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "soc_limits",
+   "label": "SoC limits",
+   "pass_condition": "8% <= SoC <= 95%",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "power_ratings",
+   "label": "Power ratings",
+   "pass_condition": "No unit above its MW rating; tripped units at 0 MW",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "transmission_limits",
+   "label": "Transmission limits",
+   "pass_condition": "Imports, exports and corridor flow within current limits",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "no_wash_trading",
+   "label": "No wash trading",
+   "pass_condition": "Never import and export in the same interval",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "justified_curtailment",
+   "label": "Justified curtailment",
+   "pass_condition": "Spill only if the corridor is full, the export line is full or the price is negative, with batteries absorbing what they can",
+   "passed": 257,
+   "failed": 0,
+   "applicable": 257,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "no_discharge_while_curtailing",
+   "label": "No discharge while curtailing",
+   "pass_condition": "No battery discharge in an interval where renewables are curtailed for a transmission limit (except the frequency reflex or to avoid shedding)",
+   "passed": 256,
+   "failed": 0,
+   "applicable": 256,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "unavoidable_shedding_only",
+   "label": "Unavoidable shedding only",
+   "pass_condition": "Unserved load only with imports at the limit and batteries at full discharge",
+   "passed": 0,
+   "failed": 0,
+   "applicable": 0,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "frequency_response",
+   "label": "Frequency response",
+   "pass_condition": "Batteries inject during every dip below 49.9 Hz",
+   "passed": 32,
+   "failed": 0,
+   "applicable": 32,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "storm_readiness",
+   "label": "Storm readiness",
+   "pass_condition": "Fleet >= 50% charged when a forecast storm arrives",
+   "passed": 52,
+   "failed": 0,
+   "applicable": 52,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "latency",
+   "label": "Latency",
+   "pass_condition": "Every decision under 1 s",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "critical_load_protected",
+   "label": "Critical load protected",
+   "pass_condition": "Critical consumers are never curtailed by the agent",
+   "passed": 960,
+   "failed": 0,
+   "applicable": 960,
+   "rate": 1,
+   "failures": []
+  },
+  {
+   "key": "determinism",
+   "label": "Determinism",
+   "pass_condition": "Same inputs and seed produce the same cluster",
+   "passed": 1,
+   "failed": 0,
+   "applicable": 1,
+   "rate": 1,
+   "failures": []
+  }
+ ],
+ "benchmark": {
+  "agent_cost_usd": 963760.7,
+  "rule_based_cost_usd": 767267.8,
+  "no_storage_cost_usd": 602391.6,
+  "win_rate_vs_rule_based": 0.23333333333333334,
+  "agent_net_cost_usd": 909400.3,
+  "rule_based_net_cost_usd": 1075593.9000000001,
+  "win_rate_net_cost": 0.5333333333333333,
+  "agent_unserved_mwh": 0,
+  "rule_based_unserved_mwh": 181.2902,
+  "avoidable_unserved_mwh": 0,
+  "agent_co2_t": 4975.0599999999995,
+  "rule_based_co2_t": 3996.4,
+  "no_storage_co2_t": 4385.11
+ },
+ "rows": [
+  {
+   "episode": 0,
+   "preset": "contingency_cascade",
+   "world_seed": 16641,
+   "start": 40,
+   "events": [
+    [
+     42,
+     "battery_trip"
+    ],
+    [
+     53,
+     "demand_surge"
+    ],
+    [
+     53,
+     "forecast_revision"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": 28460.9,
+    "carbon_tonnes": 147.61,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 67.961,
+    "renewable_utilisation": 0.9741,
+    "reserve_compliance": 1,
+    "throughput_mwh": 163.54,
+    "wear_usd": 2914.2,
+    "dr_mwh": 6,
+    "shift_mwh": 154,
+    "net_cost_usd": 25384.6,
+    "stored_energy_delta_mwh": 113.72,
+    "intervals": 32,
+    "latency_p95_ms": 29.2
+   },
+   "rule_based": {
+    "energy_cost_usd": 18641,
+    "carbon_tonnes": 122.11,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 51.331,
+    "renewable_utilisation": 0.9804,
+    "reserve_compliance": 0.375,
+    "throughput_mwh": 399.22,
+    "wear_usd": 7156.4,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 22347.1,
+    "stored_energy_delta_mwh": -137,
+    "intervals": 32,
+    "latency_p95_ms": 29.7
+   },
+   "no_storage": {
+    "energy_cost_usd": 28149.9,
+    "carbon_tonnes": 201.43,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 40.135,
+    "renewable_utilisation": 0.9847,
+    "reserve_compliance": 0.9375,
+    "throughput_mwh": 255.73,
+    "wear_usd": 4483.2,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 26117.2,
+    "stored_energy_delta_mwh": 75.14,
+    "intervals": 32,
+    "latency_p95_ms": 34.07
+   }
+  },
+  {
+   "episode": 1,
+   "preset": "evening_price_crisis",
+   "world_seed": 44922,
+   "start": 48,
+   "events": [
+    [
+     53,
+     "forecast_revision"
+    ],
+    [
+     55,
+     "demand_surge"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": 99500.4,
+    "carbon_tonnes": 128.96,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 22.143,
+    "renewable_utilisation": 0.9901,
+    "reserve_compliance": 0.8438,
+    "throughput_mwh": 584.47,
+    "wear_usd": 8889.4,
+    "dr_mwh": 6,
+    "shift_mwh": 147,
+    "net_cost_usd": 105964.3,
+    "stored_energy_delta_mwh": -58.81,
+    "intervals": 32,
+    "latency_p95_ms": 25.9
+   },
+   "rule_based": {
+    "energy_cost_usd": 79480.5,
+    "carbon_tonnes": 106.82,
+    "unserved_mwh": 12.6226,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 22.143,
+    "renewable_utilisation": 0.9901,
+    "reserve_compliance": 0.5625,
+    "throughput_mwh": 791.26,
+    "wear_usd": 11847.5,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 120807.3,
+    "stored_energy_delta_mwh": -376,
+    "intervals": 32,
+    "latency_p95_ms": 25.79
+   },
+   "no_storage": {
+    "energy_cost_usd": 90733.9,
+    "carbon_tonnes": 135.57,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 22.143,
+    "renewable_utilisation": 0.9901,
+    "reserve_compliance": 0.7812,
+    "throughput_mwh": 595.78,
+    "wear_usd": 9009.3,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 109412.1,
+    "stored_energy_delta_mwh": -169.94,
+    "intervals": 32,
+    "latency_p95_ms": 27.03
+   }
+  },
+  {
+   "episode": 2,
+   "preset": "storm_passage",
+   "world_seed": 92940,
+   "start": 48,
+   "events": [
+    [
+     50,
+     "price_spike"
+    ],
+    [
+     67,
+     "line_congestion"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": 59906.9,
+    "carbon_tonnes": 237.62,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 128.423,
+    "renewable_utilisation": 0.9469,
+    "reserve_compliance": 1,
+    "throughput_mwh": 362.91,
+    "wear_usd": 5625.4,
+    "dr_mwh": 6,
+    "shift_mwh": 126,
+    "net_cost_usd": 43778.9,
+    "stored_energy_delta_mwh": 294.07,
+    "intervals": 32,
+    "latency_p95_ms": 25.17
+   },
+   "rule_based": {
+    "energy_cost_usd": 12215.3,
+    "carbon_tonnes": 65.94,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 128.423,
+    "renewable_utilisation": 0.9469,
+    "reserve_compliance": 0.5312,
+    "throughput_mwh": 989.13,
+    "wear_usd": 15415.2,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 32396.3,
+    "stored_energy_delta_mwh": -367.97,
+    "intervals": 32,
+    "latency_p95_ms": 25.76
+   },
+   "no_storage": {
+    "energy_cost_usd": -7127.8,
+    "carbon_tonnes": 130.45,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 128.423,
+    "renewable_utilisation": 0.9469,
+    "reserve_compliance": 0.6562,
+    "throughput_mwh": 883.89,
+    "wear_usd": 13318.2,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 11128.2,
+    "stored_energy_delta_mwh": -332.87,
+    "intervals": 32,
+    "latency_p95_ms": 24.73
+   }
+  },
+  {
+   "episode": 3,
+   "preset": "typical_day",
+   "world_seed": 31793,
+   "start": 48,
+   "events": [
+    [
+     50,
+     "battery_trip"
+    ],
+    [
+     53,
+     "forecast_revision"
+    ],
+    [
+     70,
+     "demand_surge"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": 25868.1,
+    "carbon_tonnes": 107.34,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 4.731,
+    "renewable_utilisation": 0.9981,
+    "reserve_compliance": 0.9688,
+    "throughput_mwh": 255.4,
+    "wear_usd": 4200.3,
+    "dr_mwh": 6,
+    "shift_mwh": 175,
+    "net_cost_usd": 22243.3,
+    "stored_energy_delta_mwh": 122.43,
+    "intervals": 32,
+    "latency_p95_ms": 27.19
+   },
+   "rule_based": {
+    "energy_cost_usd": 12000.8,
+    "carbon_tonnes": 118.42,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 4.731,
+    "renewable_utilisation": 0.9981,
+    "reserve_compliance": 0.4688,
+    "throughput_mwh": 713.54,
+    "wear_usd": 11557,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 22732.6,
+    "stored_energy_delta_mwh": -362.46,
+    "intervals": 32,
+    "latency_p95_ms": 26.71
+   },
+   "no_storage": {
+    "energy_cost_usd": 27254.3,
+    "carbon_tonnes": 162.88,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 4.731,
+    "renewable_utilisation": 0.9981,
+    "reserve_compliance": 0.9688,
+    "throughput_mwh": 248.51,
+    "wear_usd": 4103.8,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 23414.7,
+    "stored_energy_delta_mwh": 129.68,
+    "intervals": 32,
+    "latency_p95_ms": 28.35
+   }
+  },
+  {
+   "episode": 4,
+   "preset": "volatile_weather",
+   "world_seed": 40162,
+   "start": 56,
+   "events": [
+    [
+     63,
+     "price_spike"
+    ],
+    [
+     70,
+     "wind_surge"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": 21010.6,
+    "carbon_tonnes": 216.32,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 195,
+    "renewable_utilisation": 0.9166,
+    "reserve_compliance": 0.9375,
+    "throughput_mwh": 238.2,
+    "wear_usd": 3550.4,
+    "dr_mwh": 6,
+    "shift_mwh": 49,
+    "net_cost_usd": 20204.5,
+    "stored_energy_delta_mwh": 11.77,
+    "intervals": 32,
+    "latency_p95_ms": 26.66
+   },
+   "rule_based": {
+    "energy_cost_usd": 20582.2,
+    "carbon_tonnes": 141.81,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 195,
+    "renewable_utilisation": 0.9166,
+    "reserve_compliance": 0.25,
+    "throughput_mwh": 705.52,
+    "wear_usd": 10523.5,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 45497.4,
+    "stored_energy_delta_mwh": -363.76,
+    "intervals": 32,
+    "latency_p95_ms": 27.6
+   },
+   "no_storage": {
+    "energy_cost_usd": -4795,
+    "carbon_tonnes": 112.46,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 195,
+    "renewable_utilisation": 0.9166,
+    "reserve_compliance": 0.4062,
+    "throughput_mwh": 560,
+    "wear_usd": 8486.2,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 20129.4,
+    "stored_energy_delta_mwh": -363.89,
+    "intervals": 32,
+    "latency_p95_ms": 24.81
+   }
+  },
+  {
+   "episode": 5,
+   "preset": "contingency_cascade",
+   "world_seed": 33531,
+   "start": 16,
+   "events": [
+    [
+     19,
+     "price_spike"
+    ],
+    [
+     21,
+     "forecast_revision"
+    ],
+    [
+     33,
+     "iso_dr_call"
+    ]
+   ],
+   "agent": {
+    "energy_cost_usd": -3691.2,
+    "carbon_tonnes": 38.03,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 83.195,
+    "renewable_utilisation": 0.9664,
+    "reserve_compliance": 0.9688,
+    "throughput_mwh": 263.86,
+    "wear_usd": 4409.3,
+    "dr_mwh": 6,
+    "shift_mwh": 28,
+    "net_cost_usd": -9055.5,
+    "stored_energy_delta_mwh": 79.15,
+    "intervals": 32,
+    "latency_p95_ms": 29.79
+   },
+   "rule_based": {
+    "energy_cost_usd": -4316.5,
+    "carbon_tonnes": 30.44,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 83.195,
+    "renewable_utilisation": 0.9664,
+    "reserve_compliance": 0.8125,
+    "throughput_mwh": 478.36,
+    "wear_usd": 7815.2,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 5801.3,
+    "stored_energy_delta_mwh": -149.28,
+    "intervals": 32,
+    "latency_p95_ms": 31.2
+   },
+   "no_storage": {
+    "energy_cost_usd": -6924.4,
+    "carbon_tonnes": 32.63,
+    "unserved_mwh": 0,
+    "avoidable_unserved_mwh": 0,
+    "curtailed_mwh": 83.195,
+    "renewable_utilisation": 0.9664,
+    "reserve_compliance": 0.5,
+    "throughput_mwh": 455.16,
+    "wear_usd": 7428.1,
+    "dr_mwh": 0,
+    "shift_mwh": 0,
+    "net_cost_usd": 11563,
+    "stored_energy_delta_mwh": -272.78,
+    "intervals": 32,
+    "latency_p95_ms": 31.09
+   }
+  }
+ ],
+ "available": true
+}

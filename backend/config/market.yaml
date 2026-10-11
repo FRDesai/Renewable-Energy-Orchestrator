@@ -1,0 +1,29 @@
+# Market and carbon parameters (PRD "Reference scenario" -> Market row).
+version: 1
+
+price:
+  buy_spread_per_mwh: 6.0        # imports pay price + spread
+  typical_per_mwh: 52.0          # "Spot $310 vs typical $52" reference
+  floor_per_mwh: -40.0
+  cap_per_mwh: 2000.0
+
+carbon:
+  price_per_tonne: 85.0
+  grid_intensity_t_per_mwh: 0.42
+  accounting: average            # PRD open question: average vs marginal. Average for v1.
+
+demand_response:
+  customer_payment_per_mwh: 120.0
+  iso_call_payment_per_mwh: 300.0
+  max_calls_per_day: 2           # fairness: contract caps, rotated across consumers
+  max_calls_per_month: 12
+
+load_shift:
+  payback_hours: 4               # shifted load is restored off-peak within this window
+  payment_per_mwh: 35.0          # PRD counts "DR and shift payments" in net cost but
+                                 # gives no shift rate; see DECISIONS.md D11.
+
+value_of_lost_load:
+  # PRD open question: should VOLL differ by consumer class? Config so it can.
+  default_per_mwh: 9000.0
+  critical_per_mwh: 30000.0

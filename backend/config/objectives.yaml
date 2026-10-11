@@ -1,0 +1,140 @@
+# Optimality criteria (PRD "Optimality criteria").
+version: 1
+
+horizon:
+  lookahead_hours: 4
+  steps: 16                      # 16 x 15 min
+  scenarios: 24
+
+# Six objectives, all minimised. These are the operator's BASE weights; the agent
+# only shifts them via regime multipliers.
+base_weights:
+  net_cost: 0.30
+  reliability_risk: 0.20
+  carbon: 0.18
+  curtailment: 0.14
+  grid_stability: 0.10
+  battery_wear: 0.08
+
+reliability:
+  unserved_weight: 5.0           # 5 x unserved MWh
+  reserve_shortfall_weight: 0.4  # + 0.4 x reserve-shortfall MWh
+  fast_reserve_requirement_mw: 40.0
+  cvar_quantile: 0.90
+
+risk:
+  lambda_base: 0.4               # operator setting
+  lambda_max: 1.5                # rises in stress regimes
+  cvar_quantile: 0.90
+
+stored_energy:
+  # Energy left in batteries at horizon end is valued at the upper-quartile price
+  # of the next 24 h x 0.93, so a short horizon does not drain cheaply before peak.
+  price_quantile: 0.75
+  efficiency_haircut: 0.93
+
+scoring:
+  range_floor:                   # floor on the min-max range so trivial differences
+    net_cost: 500.0              # are not amplified
+    reliability_risk: 0.5
+    carbon: 2.0
+    curtailment: 2.0
+    grid_stability: 0.05
+    battery_wear: 200.0
+  hysteresis_margin: 0.015       # keep previous cluster if within this of the winner
+
+# Step 1 -- hard guardrails, lexicographic, applied before any trade-off.
+guardrails:
+  avoidable_unserved_mwh: 0.25   # discard clusters more than this above the best
+  storm_soc_pct: 55.0            # under a storm alert, at forecast arrival
+  frequency_dip_hz: 49.95        # during a dip, discard clusters that do not inject
+  # Fix for the PRD's "justified curtailment" defect: forbid battery discharge in
+  # any interval where renewables are curtailed for export/corridor limits.
+  forbid_discharge_while_curtailing: true
+
+# Step 2 -- situation-adaptive weights.
+regimes:
+  grid_stress:
+    label: Grid stress
+    trigger: Storm alert or storm on site
+    multipliers: {reliability_risk: 2.4, grid_stability: 1.6, net_cost: 0.7, curtailment: 0.7}
+    risk_aversion: 0.6
+  frequency_event:
+    label: Frequency event
+    trigger: Frequency below 49.95 Hz
+    multipliers: {grid_stability: 2.5, reliability_risk: 1.6}
+    risk_aversion: 0.3
+  asset_contingency:
+    label: Asset contingency
+    trigger: A battery offline
+    multipliers: {reliability_risk: 1.7, battery_wear: 0.8}
+    risk_aversion: 0.3
+  scarcity_ahead:
+    label: Scarcity ahead
+    trigger: Deficit within 3 h above 75% of import limit
+    multipliers: {reliability_risk: 1.8, net_cost: 1.1}
+    risk_aversion: 0.3
+  price_spike:
+    label: Price spike
+    trigger: Price at or above max(1.6 x 70th percentile, $150)
+    multipliers: {net_cost: 1.9, reliability_risk: 1.2, carbon: 0.8}
+    risk_aversion: 0.0
+  peak_pricing:
+    label: Peak pricing
+    trigger: Price at or above the 70th percentile of the day
+    multipliers: {net_cost: 1.35}
+    risk_aversion: 0.0
+  transmission_constrained:
+    label: Transmission constrained
+    trigger: Export derated or corridor full
+    multipliers: {curtailment: 1.4, grid_stability: 1.3}
+    risk_aversion: 0.0
+  renewable_surplus:
+    label: Renewable surplus
+    trigger: Renewables exceed load by more than 25 MW
+    multipliers: {curtailment: 2.0, carbon: 1.3}
+    risk_aversion: 0.0
+  negative_prices:
+    label: Negative prices
+    trigger: Price below $0
+    multipliers: {net_cost: 1.4, curtailment: 0.6}
+    risk_aversion: 0.0
+  dr_program_active:
+    label: DR program active
+    trigger: ISO demand-response call
+    multipliers: {net_cost: 1.3}
+    risk_aversion: 0.0
+
+thresholds:
+  price_spike_percentile: 0.70
+  price_spike_multiple: 1.6
+  price_spike_floor_per_mwh: 150.0
+  peak_price_percentile: 0.70
+  scarcity_horizon_hours: 3
+  scarcity_import_fraction: 0.75
+  renewable_surplus_mw: 25.0
+  corridor_full_fraction: 0.98
+
+maintenance:
+  min_saving_to_delay_usd: 2500.0
+  storm_overlap_forbidden: true  # crew safety
+
+autonomy:
+  # Routine set-points execute automatically; these require one-click approval.
+  approval_required:
+    - load_reduction_beyond_contracted_dr
+    - maintenance_move
+    - crew_dispatch
+    - out_of_configured_bounds
+  # PRD open question: which actions graduate to autonomous after shadow mode.
+  # Batch/Monte-Carlo runs auto-approve (recorded in the trace).
+
+# Surprise persistence for scenario generation (PRD "Uncertainty handling").
+persistence_hours:
+  cloud_bank: 1.5
+  price_spike: 0.75
+  demand_surge: 3.0
+  congestion: 2.0
+
+storm:
+  arrival_jitter_hours: 0.6      # +/- per scenario

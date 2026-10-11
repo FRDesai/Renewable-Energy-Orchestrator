@@ -1,0 +1,119 @@
+# Reference scenario portfolio (PRD "Reference scenario").
+# Capacities are illustrative and configurable -- nothing in the engine hardcodes them.
+version: 1
+
+interval_minutes: 15
+
+solar_farms:
+  # 400 MW across 5 farms in 3 cloud regions, so clouds hit farms unevenly.
+  - id: mesa_verde
+    name: Mesa Verde
+    capacity_mw: 120.0
+    cloud_region: region_a
+  - id: dry_creek
+    name: Dry Creek
+    capacity_mw: 90.0
+    cloud_region: region_a
+  - id: redrock
+    name: Redrock
+    capacity_mw: 80.0
+    cloud_region: region_b
+  - id: alder_flats
+    name: Alder Flats
+    capacity_mw: 60.0
+    cloud_region: region_b
+  - id: pinecrest
+    name: Pinecrest
+    capacity_mw: 50.0
+    cloud_region: region_c
+
+wind_farms:
+  # 380 MW across 3 farms. Ridgeback + Gale Point sit behind the north corridor
+  # (280 MW of capacity against a 220 MW limit), which is what makes the
+  # corridor constraint bind. Coastal Bluff is south of it.
+  - id: ridgeback
+    name: Ridgeback
+    capacity_mw: 160.0
+    corridor: north
+  - id: gale_point
+    name: Gale Point
+    capacity_mw: 120.0
+    corridor: north
+  - id: coastal_bluff
+    name: Coastal Bluff
+    capacity_mw: 100.0
+    corridor: south
+
+solar_response:
+  # Thick cloud cuts direct irradiance but diffuse light remains, so output never
+  # collapses to zero in daylight. Shared by the world model and the forecaster's
+  # physical bounds, so a forecast cannot predict an impossible collapse.
+  max_cloud_attenuation: 0.85
+
+wind_power_curve:
+  cut_in_ms: 3.0
+  rated_ms: 12.5
+  cut_out_ms: 25.0
+
+batteries:
+  - id: harbor
+    name: Harbor BESS
+    power_mw: 120.0
+    energy_mwh: 480.0
+    one_way_efficiency: 0.95
+    wear_cost_per_mwh: 14.0
+  - id: valley
+    name: Valley BESS
+    power_mw: 80.0
+    energy_mwh: 320.0
+    one_way_efficiency: 0.94
+    wear_cost_per_mwh: 18.0
+
+battery_limits:
+  soc_min_pct: 8.0               # hard floor; reached only to avoid shedding load
+  soc_max_pct: 95.0
+  reserve_floor_pct: 10.0        # normal dispatch holds above this; the emergency
+                                 # cascade may go below it, down to soc_min_pct
+  storm_readiness_pct: 50.0      # invariant: fleet >= 50% when a forecast storm hits
+  storm_guardrail_pct: 55.0      # guardrail: discard clusters below this at arrival
+  storm_max_lead_hours: 12.0     # guardrail covers the full alert lead time
+
+industrial_consumers:
+  - id: northgate_steel
+    name: Northgate Steel
+    base_mw: 60.0
+    shiftable_mw: 20.0
+    dr_mw: 0.0
+    critical: false
+  - id: cobalt_dc
+    name: Cobalt Data Center
+    base_mw: 40.0
+    shiftable_mw: 0.0
+    dr_mw: 0.0
+    critical: true               # never curtailed by the agent
+  - id: sinclair_chem
+    name: Sinclair Chemicals
+    base_mw: 35.0
+    shiftable_mw: 0.0
+    dr_mw: 12.0
+    critical: false
+  - id: polar_cold
+    name: Polar Cold Storage
+    base_mw: 15.0
+    shiftable_mw: 8.0
+    dr_mw: 0.0
+    critical: false
+
+municipal_load:
+  min_mw: 95.0
+  max_mw: 180.0
+  critical: true                 # never curtailed by the agent
+
+grid:
+  import_limit_mw: 220.0
+  export_limit_mw: 200.0
+  export_derated_mw: 80.0        # under congestion
+  north_corridor_limit_mw: 220.0
+  north_corridor_derated_mw: 150.0
+  nominal_frequency_hz: 50.0
+  frequency_reflex_hz: 49.9      # below this, batteries must inject

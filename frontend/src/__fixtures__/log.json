@@ -1,0 +1,473 @@
+{
+ "entries": [
+  {
+   "kind": "decision",
+   "interval": 40,
+   "time": "10:00",
+   "severity": "info",
+   "message": "Soak surplus -- scheduled interval",
+   "detail": {
+    "mode": "rule_based_fallback",
+    "evaluation_ms": 30.49,
+    "set_points": 2
+   }
+  },
+  {
+   "kind": "fallback",
+   "interval": 40,
+   "time": "10:00",
+   "severity": "critical",
+   "message": "price, solar stale for 5 intervals, beyond the 2-interval limit",
+   "detail": {}
+  },
+  {
+   "kind": "decision",
+   "interval": 39,
+   "time": "09:45",
+   "severity": "info",
+   "message": "Soak surplus -- scheduled interval",
+   "detail": {
+    "mode": "rule_based_fallback",
+    "evaluation_ms": 28.85,
+    "set_points": 2
+   }
+  },
+  {
+   "kind": "fallback",
+   "interval": 39,
+   "time": "09:45",
+   "severity": "critical",
+   "message": "price, solar stale for 4 intervals, beyond the 2-interval limit",
+   "detail": {}
+  },
+  {
+   "kind": "decision",
+   "interval": 38,
+   "time": "09:30",
+   "severity": "info",
+   "message": "Soak surplus -- scheduled interval",
+   "detail": {
+    "mode": "rule_based_fallback",
+    "evaluation_ms": 28.55,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "fallback",
+   "interval": 38,
+   "time": "09:30",
+   "severity": "critical",
+   "message": "price, solar stale for 3 intervals, beyond the 2-interval limit",
+   "detail": {}
+  },
+  {
+   "kind": "decision",
+   "interval": 37,
+   "time": "09:15",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- scheduled interval",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 26.94,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 36,
+   "time": "09:00",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- Data dropout injected",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 29.74,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "replan",
+   "interval": 36,
+   "time": "09:00",
+   "severity": "info",
+   "message": "plan superseded after Data dropout injected",
+   "detail": {}
+  },
+  {
+   "kind": "event_injected",
+   "interval": 36,
+   "time": "09:00",
+   "severity": "info",
+   "message": "Data dropout injected",
+   "detail": {
+    "type": "data_dropout",
+    "label": "Data dropout",
+    "severity": "moderate",
+    "start_interval": 36,
+    "end_interval": 48,
+    "arrival_interval": null,
+    "intervals_to_arrival": null,
+    "region": null,
+    "corridor": null,
+    "affected_assets": [],
+    "note": "",
+    "extracted_by": null,
+    "extraction_confidence_pct": 100,
+    "confirmed_by_operator": false,
+    "needs_confirmation": false,
+    "source_phrases": {}
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 36,
+   "time": "09:00",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- session opened",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 28.37,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "warmup",
+   "interval": 36,
+   "time": "09:00",
+   "severity": "info",
+   "message": "36 interval(s) of history generated in batch mode, so the console opens at 09:00 already running",
+   "detail": {}
+  },
+  {
+   "kind": "decision",
+   "interval": 35,
+   "time": "08:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 29.71,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 34,
+   "time": "08:30",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 28.22,
+    "set_points": 4
+   }
+  },
+  {
+   "kind": "crew_dispatch_proposed",
+   "interval": 34,
+   "time": "08:30",
+   "severity": "info",
+   "message": "Battery trip: inspect before returning to service",
+   "detail": {}
+  },
+  {
+   "kind": "decision",
+   "interval": 33,
+   "time": "08:15",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 25.29,
+    "set_points": 4
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 32,
+   "time": "08:00",
+   "severity": "info",
+   "message": "Soak surplus + DR + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 25.8,
+    "set_points": 4
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 31,
+   "time": "07:45",
+   "severity": "info",
+   "message": "Soak surplus + DR + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 26.86,
+    "set_points": 2
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 30,
+   "time": "07:30",
+   "severity": "info",
+   "message": "Soak surplus + DR + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 24.95,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 29,
+   "time": "07:15",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 26.17,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 28,
+   "time": "07:00",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.95,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 27,
+   "time": "06:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 26.65,
+    "set_points": 3
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 26,
+   "time": "06:30",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.89,
+    "set_points": 3
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 25,
+   "time": "06:15",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 20.25,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 24,
+   "time": "06:00",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 20.41,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 23,
+   "time": "05:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 21.76,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 22,
+   "time": "05:30",
+   "severity": "info",
+   "message": "Price arbitrage + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 23.75,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 21,
+   "time": "05:15",
+   "severity": "info",
+   "message": "Hold for higher price + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 22.85,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 20,
+   "time": "05:00",
+   "severity": "info",
+   "message": "Price arbitrage + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 31.59,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 19,
+   "time": "04:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 20.96,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 18,
+   "time": "04:30",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.37,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 17,
+   "time": "04:15",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.55,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 16,
+   "time": "04:00",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.92,
+    "set_points": 3
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 15,
+   "time": "03:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 19.95,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 14,
+   "time": "03:30",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 20.39,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 13,
+   "time": "03:15",
+   "severity": "info",
+   "message": "Soak surplus + DR + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 21.85,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 12,
+   "time": "03:00",
+   "severity": "info",
+   "message": "Soak surplus + DR + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 21.24,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 11,
+   "time": "02:45",
+   "severity": "info",
+   "message": "Soak surplus + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 21.26,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 10,
+   "time": "02:30",
+   "severity": "info",
+   "message": "Hold for higher price + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 23.43,
+    "set_points": 5
+   }
+  },
+  {
+   "kind": "decision",
+   "interval": 9,
+   "time": "02:15",
+   "severity": "info",
+   "message": "Hold for higher price + Shift -- warm-up history (batch mode)",
+   "detail": {
+    "mode": "agent",
+    "evaluation_ms": 22.42,
+    "set_points": 3
+   }
+  }
+ ]
+}

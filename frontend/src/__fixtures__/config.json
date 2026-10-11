@@ -1,0 +1,427 @@
+{
+ "portfolio": {
+  "version": 1,
+  "interval_minutes": 15,
+  "solar": [
+   {
+    "id": "mesa_verde",
+    "name": "Mesa Verde",
+    "capacity_mw": 120,
+    "cloud_region": "region_a"
+   },
+   {
+    "id": "dry_creek",
+    "name": "Dry Creek",
+    "capacity_mw": 90,
+    "cloud_region": "region_a"
+   },
+   {
+    "id": "redrock",
+    "name": "Redrock",
+    "capacity_mw": 80,
+    "cloud_region": "region_b"
+   },
+   {
+    "id": "alder_flats",
+    "name": "Alder Flats",
+    "capacity_mw": 60,
+    "cloud_region": "region_b"
+   },
+   {
+    "id": "pinecrest",
+    "name": "Pinecrest",
+    "capacity_mw": 50,
+    "cloud_region": "region_c"
+   }
+  ],
+  "wind": [
+   {
+    "id": "ridgeback",
+    "name": "Ridgeback",
+    "capacity_mw": 160,
+    "corridor": "north"
+   },
+   {
+    "id": "gale_point",
+    "name": "Gale Point",
+    "capacity_mw": 120,
+    "corridor": "north"
+   },
+   {
+    "id": "coastal_bluff",
+    "name": "Coastal Bluff",
+    "capacity_mw": 100,
+    "corridor": "south"
+   }
+  ],
+  "batteries": [
+   {
+    "id": "harbor",
+    "name": "Harbor BESS",
+    "power_mw": 120,
+    "energy_mwh": 480,
+    "one_way_efficiency": 0.95,
+    "wear_cost_per_mwh": 14
+   },
+   {
+    "id": "valley",
+    "name": "Valley BESS",
+    "power_mw": 80,
+    "energy_mwh": 320,
+    "one_way_efficiency": 0.94,
+    "wear_cost_per_mwh": 18
+   }
+  ],
+  "consumers": [
+   {
+    "id": "northgate_steel",
+    "name": "Northgate Steel",
+    "base_mw": 60,
+    "shiftable_mw": 20,
+    "dr_mw": 0,
+    "critical": false
+   },
+   {
+    "id": "cobalt_dc",
+    "name": "Cobalt Data Center",
+    "base_mw": 40,
+    "shiftable_mw": 0,
+    "dr_mw": 0,
+    "critical": true
+   },
+   {
+    "id": "sinclair_chem",
+    "name": "Sinclair Chemicals",
+    "base_mw": 35,
+    "shiftable_mw": 0,
+    "dr_mw": 12,
+    "critical": false
+   },
+   {
+    "id": "polar_cold",
+    "name": "Polar Cold Storage",
+    "base_mw": 15,
+    "shiftable_mw": 8,
+    "dr_mw": 0,
+    "critical": false
+   }
+  ],
+  "battery_limits": {
+   "soc_min_pct": 8,
+   "soc_max_pct": 95,
+   "reserve_floor_pct": 10,
+   "storm_readiness_pct": 50,
+   "storm_guardrail_pct": 55,
+   "storm_max_lead_hours": 12
+  },
+  "grid": {
+   "import_limit_mw": 220,
+   "export_limit_mw": 200,
+   "export_derated_mw": 80,
+   "north_corridor_limit_mw": 220,
+   "north_corridor_derated_mw": 150,
+   "nominal_frequency_hz": 50,
+   "frequency_reflex_hz": 49.9
+  },
+  "municipal": {
+   "min_mw": 95,
+   "max_mw": 180,
+   "critical": true
+  },
+  "cloud_regions": [
+   "region_a",
+   "region_b",
+   "region_c"
+  ],
+  "corridors": [
+   "north",
+   "south"
+  ]
+ },
+ "objectives": {
+  "version": 1,
+  "lookahead_hours": 4,
+  "steps": 16,
+  "scenarios": 24,
+  "base_weights": {
+   "net_cost": 0.3,
+   "reliability_risk": 0.2,
+   "carbon": 0.18,
+   "curtailment": 0.14,
+   "grid_stability": 0.1,
+   "battery_wear": 0.08
+  },
+  "risk": {
+   "lambda_base": 0.4,
+   "lambda_max": 1.5,
+   "cvar_quantile": 0.9
+  },
+  "hysteresis_margin": 0.015,
+  "guardrails": {
+   "avoidable_unserved_mwh": 0.25,
+   "storm_soc_pct": 55,
+   "frequency_dip_hz": 49.95,
+   "forbid_discharge_while_curtailing": true
+  },
+  "regimes": [
+   {
+    "key": "grid_stress",
+    "label": "Grid stress",
+    "trigger": "Storm alert or storm on site",
+    "multipliers": {
+     "reliability_risk": 2.4,
+     "grid_stability": 1.6,
+     "net_cost": 0.7,
+     "curtailment": 0.7
+    },
+    "risk_aversion": 0.6
+   },
+   {
+    "key": "frequency_event",
+    "label": "Frequency event",
+    "trigger": "Frequency below 49.95 Hz",
+    "multipliers": {
+     "grid_stability": 2.5,
+     "reliability_risk": 1.6
+    },
+    "risk_aversion": 0.3
+   },
+   {
+    "key": "asset_contingency",
+    "label": "Asset contingency",
+    "trigger": "A battery offline",
+    "multipliers": {
+     "reliability_risk": 1.7,
+     "battery_wear": 0.8
+    },
+    "risk_aversion": 0.3
+   },
+   {
+    "key": "scarcity_ahead",
+    "label": "Scarcity ahead",
+    "trigger": "Deficit within 3 h above 75% of import limit",
+    "multipliers": {
+     "reliability_risk": 1.8,
+     "net_cost": 1.1
+    },
+    "risk_aversion": 0.3
+   },
+   {
+    "key": "price_spike",
+    "label": "Price spike",
+    "trigger": "Price at or above max(1.6 x 70th percentile, $150)",
+    "multipliers": {
+     "net_cost": 1.9,
+     "reliability_risk": 1.2,
+     "carbon": 0.8
+    },
+    "risk_aversion": 0
+   },
+   {
+    "key": "peak_pricing",
+    "label": "Peak pricing",
+    "trigger": "Price at or above the 70th percentile of the day",
+    "multipliers": {
+     "net_cost": 1.35
+    },
+    "risk_aversion": 0
+   },
+   {
+    "key": "transmission_constrained",
+    "label": "Transmission constrained",
+    "trigger": "Export derated or corridor full",
+    "multipliers": {
+     "curtailment": 1.4,
+     "grid_stability": 1.3
+    },
+    "risk_aversion": 0
+   },
+   {
+    "key": "renewable_surplus",
+    "label": "Renewable surplus",
+    "trigger": "Renewables exceed load by more than 25 MW",
+    "multipliers": {
+     "curtailment": 2,
+     "carbon": 1.3
+    },
+    "risk_aversion": 0
+   },
+   {
+    "key": "negative_prices",
+    "label": "Negative prices",
+    "trigger": "Price below $0",
+    "multipliers": {
+     "net_cost": 1.4,
+     "curtailment": 0.6
+    },
+    "risk_aversion": 0
+   },
+   {
+    "key": "dr_program_active",
+    "label": "DR program active",
+    "trigger": "ISO demand-response call",
+    "multipliers": {
+     "net_cost": 1.3
+    },
+    "risk_aversion": 0
+   }
+  ],
+  "autonomy": {
+   "approval_required": [
+    "load_reduction_beyond_contracted_dr",
+    "maintenance_move",
+    "crew_dispatch",
+    "out_of_configured_bounds"
+   ]
+  },
+  "maintenance": {
+   "min_saving_to_delay_usd": 2500,
+   "storm_overlap_forbidden": true
+  }
+ },
+ "market": {
+  "version": 1,
+  "price": {
+   "buy_spread_per_mwh": 6,
+   "typical_per_mwh": 52,
+   "floor_per_mwh": -40,
+   "cap_per_mwh": 2000
+  },
+  "carbon": {
+   "price_per_tonne": 85,
+   "grid_intensity_t_per_mwh": 0.42,
+   "accounting": "average"
+  },
+  "demand_response": {
+   "customer_payment_per_mwh": 120,
+   "iso_call_payment_per_mwh": 300,
+   "max_calls_per_day": 2,
+   "max_calls_per_month": 12
+  },
+  "load_shift": {
+   "payback_hours": 4,
+   "payment_per_mwh": 35
+  },
+  "value_of_lost_load": {
+   "default_per_mwh": 9000,
+   "critical_per_mwh": 30000
+  }
+ },
+ "presets": {
+  "typical_day": {
+   "label": "Typical day",
+   "description": "Calm weather, ordinary price shape, no injected events."
+  },
+  "volatile_weather": {
+   "label": "Volatile weather",
+   "description": "Fast-moving cloud banks and a wind surge; renewables swing hard."
+  },
+  "storm_passage": {
+   "label": "Storm passage",
+   "description": "Storm alert 6 h ahead, then high winds into cut-out across the evening peak."
+  },
+  "evening_price_crisis": {
+   "label": "Evening price crisis",
+   "description": "Sustained evening price spike with an ISO demand-response call."
+  },
+  "contingency_cascade": {
+   "label": "Contingency cascade",
+   "description": "Battery trip, then corridor congestion, then an industrial demand surge."
+  }
+ },
+ "injections": {
+  "cloud_bank": {
+   "label": "Cloud bank",
+   "defaults": {
+    "region": null,
+    "magnitude": 0.85,
+    "duration": 8
+   }
+  },
+  "wind_surge": {
+   "label": "Wind surge",
+   "defaults": {
+    "corridor": null,
+    "magnitude": 1.45,
+    "duration": 10
+   }
+  },
+  "price_spike": {
+   "label": "Price spike",
+   "defaults": {
+    "magnitude": 6.5,
+    "duration": 10
+   }
+  },
+  "battery_trip": {
+   "label": "Battery trip",
+   "defaults": {
+    "assets": null,
+    "duration": 24
+   }
+  },
+  "line_congestion": {
+   "label": "Line congestion",
+   "defaults": {
+    "corridor": null,
+    "duration": 24
+   }
+  },
+  "demand_surge": {
+   "label": "Demand surge",
+   "defaults": {
+    "magnitude": 1.18,
+    "duration": 8
+   }
+  },
+  "storm_alert": {
+   "label": "Storm alert",
+   "defaults": {
+    "severity": "severe",
+    "lead": 20,
+    "duration": 40
+   }
+  },
+  "frequency_dip": {
+   "label": "Frequency dip",
+   "defaults": {
+    "magnitude": 0.25,
+    "duration": 2
+   }
+  },
+  "iso_dr_call": {
+   "label": "ISO demand-response call",
+   "defaults": {
+    "duration": 8
+   }
+  },
+  "forecast_revision": {
+   "label": "Forecast revision",
+   "defaults": {
+    "magnitude": 1,
+    "duration": 8
+   }
+  },
+  "data_dropout": {
+   "label": "Data dropout",
+   "defaults": {
+    "channels": [
+     "solar",
+     "price"
+    ],
+    "duration": 4
+   }
+  }
+ },
+ "path_choices": [
+  6,
+  12,
+  24
+ ],
+ "strategies": [
+  "agent",
+  "rule_based",
+  "no_storage"
+ ],
+ "change_log": []
+}

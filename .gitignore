@@ -1,0 +1,11 @@
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+dist/
+backend/artifacts/
+.DS_Store
+*.egg-info/
+CLAUDE.md
+PLAN.md
